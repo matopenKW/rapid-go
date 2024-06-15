@@ -52,7 +52,7 @@ jobs:
       - name: setup spanner emulator
         run: |
           curl -s "$SPANNER_EMULATOR_HOST_REST/v1/projects/$SPANNER_PROJECT_ID/instances" --data '{"instanceId": "'$SPANNER_INSTANCE_ID'"}'
-          @go run github.com/cloudspannerecosystem/wrench create --directory ./db/spanner/schema.sql
+          go run github.com/cloudspannerecosystem/wrench create --directory ./db/spanner
 
 #      - name: setup database
 #        run: |
