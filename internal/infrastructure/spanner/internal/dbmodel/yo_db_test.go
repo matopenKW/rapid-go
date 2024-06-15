@@ -52,7 +52,7 @@ func Test_RWTx(t *testing.T) {
 		},
 		"failed: Syntax errors in queries (InvalidArgument)": {
 			query:       `INSERT INTO TestTable (ID, Value)`,
-			execCount:   1,
+			execCount:   2,
 			wantErrCode: codes.InvalidArgument,
 		},
 	}
