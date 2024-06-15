@@ -1,22 +1,22 @@
 package dbmodel
 
 import (
+	"context"
+	"fmt"
+	"os"
+	"testing"
+
 	"cloud.google.com/go/spanner"
 	adminapi "cloud.google.com/go/spanner/admin/database/apiv1"
 	"cloud.google.com/go/spanner/admin/database/apiv1/databasepb"
-	"context"
-	"fmt"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"os"
-	"testing"
 )
 
 func Test_RWTx(t *testing.T) {
 	ctx := context.Background()
 
 	client := setSpannerClient(ctx, t)
-	spanner.ApplyAtLeastOnce()
 	testcase := map[string]struct {
 		query       string
 		txErr       error
@@ -52,7 +52,7 @@ func Test_RWTx(t *testing.T) {
 		},
 		"failed: Syntax errors in queries (InvalidArgument)": {
 			query:       `INSERT INTO TestTable (ID, Value)`,
-			execCount:   2,
+			execCount:   1,
 			wantErrCode: codes.InvalidArgument,
 		},
 	}
@@ -60,7 +60,6 @@ func Test_RWTx(t *testing.T) {
 	rwTx := NewTransactable(client)
 	for name, tc := range testcase {
 		t.Run(name, func(t *testing.T) {
-
 			execCount := 0
 			err := rwTx.RWTx(ctx, func(ctx context.Context) error {
 				execCount++
@@ -89,7 +88,7 @@ func Test_RWTx(t *testing.T) {
 	}
 }
 
-func setSpannerClient(ctx context.Context, t *testing.T) (cli *spanner.Client) {
+func setSpannerClient(ctx context.Context, t *testing.T) *spanner.Client {
 	t.Helper()
 
 	project := os.Getenv("SPANNER_PROJECT_ID")

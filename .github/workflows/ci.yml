@@ -54,10 +54,6 @@ jobs:
           curl -s "$SPANNER_EMULATOR_HOST_REST/v1/projects/$SPANNER_PROJECT_ID/instances" --data '{"instanceId": "'$SPANNER_INSTANCE_ID'"}'
           go run github.com/cloudspannerecosystem/wrench create --directory ./db/spanner
 
-#      - name: setup database
-#        run: |
-#          wrench load --directory ./db/spanner/schema.sql --project-id $SPANNER_PROJECT_ID --instance-id $SPANNER_INSTANCE_ID --database-id $SPANNER_DATABASE_ID
-
       - name: test
         run: make test
 
