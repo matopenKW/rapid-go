@@ -44,7 +44,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: mercari/wrench@latest
 
       - name: Set up Go
         uses: actions/setup-go@v5
@@ -55,10 +54,11 @@ jobs:
       - name: setup spanner emulator
         run: |
           curl -s "$SPANNER_EMULATOR_HOST_REST/v1/projects/$SPANNER_PROJECT_ID/instances" --data '{"instanceId": "'$SPANNER_INSTANCE_ID'"}'
+          make migrate.spanner.up
 
-      - name: setup database
-        run: |
-          wrench load --directory ./db/spanner/schema.sql --project-id $SPANNER_PROJECT_ID --instance-id $SPANNER_INSTANCE_ID --database-id $SPANNER_DATABASE_ID
+#      - name: setup database
+#        run: |
+#          wrench load --directory ./db/spanner/schema.sql --project-id $SPANNER_PROJECT_ID --instance-id $SPANNER_INSTANCE_ID --database-id $SPANNER_DATABASE_ID
 
       - name: test
         run: make test
