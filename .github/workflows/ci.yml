@@ -9,7 +9,7 @@ env:
   SPANNER_EMULATOR_HOST: localhost:9010
   SPANNER_EMULATOR_HOST_REST: localhost:9020
   SPANNER_PROJECT_ID: test_project
-  SPANNER_INSTANCE_ID: test_instance
+  SPANNER_INSTANCE_ID: test-instance
   SPANNER_DATABASE_ID: test_database
 
 jobs:
@@ -34,14 +34,12 @@ jobs:
   test:
     runs-on: ubuntu-latest
     needs: build
-
     services:
-      postgres:
+      spanner_emulator:
         image: gcr.io/cloud-spanner-emulator/emulator:1.5.19
         ports:
           - 9010:9010
           - 9020:9020
-
     steps:
       - uses: actions/checkout@v4
 
