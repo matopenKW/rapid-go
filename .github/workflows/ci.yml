@@ -44,7 +44,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: mercari/wrench@1.0.4
+      - uses: mercari/wrench@latest
 
       - name: Set up Go
         uses: actions/setup-go@v5
